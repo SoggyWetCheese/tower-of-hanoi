@@ -44,11 +44,31 @@ public class TowerModel {
 
 
     // Move one disk from the source stack to the destination stack.
-    public void move(int source, int destination)
-    {
-        System.out.println("Move #" + ++moveCounter + " from " + source + " to " + destination);
+    public void move(int source, int destination) {
+        //System.out.println("Move #" + ++moveCounter + " from " + source + " to " + destination);
         // TODO!!
+        // Check if the source tower has any disks
+        int topSource = towers[source].peek();
+        if (topSource == 0) {  // Assuming 0 means empty
+            System.out.println("Invalid move: Source tower is empty.");
+            return;
+        }
+    
+        int disk = towers[source].pop(); // Take the top disk
+    
+        // Check if the destination has a larger disk
+        int topDest = towers[destination].peek();
+        if (topDest != 0 && topDest < disk) {  // If destination isn't empty, enforce rules
+            System.out.println("Invalid move: Cannot place a larger disk on a smaller one.");
+            towers[source].push(disk); // Undo move
+            return;
+        }
+    
+        towers[destination].push(disk); // Place the disk on the destination
+        System.out.println("Move #" + ++moveCounter + ": Moved disk " + disk + " from " + source + " to " + destination);
     }
+    
+    
 
     // Helper method to nicely print the current model state.
     public void print()
